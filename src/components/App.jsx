@@ -4,18 +4,19 @@ import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Component } from 'react';
 import { Section } from './Section/Section';
+import { useState } from 'react';
 
-export class App extends Component {
-  static defaultProps = {
-    state: PropTypes.number.isRequired
-  };
-  static propTypes = {};
+export const App =()=> {
+  // static defaultProps = {
+  //   state: PropTypes.number.isRequired
+  // };
+  // static propTypes = {};
+  
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  };
+
 
   leaveFeedback = name => {
     this.setState(prevState => ({
@@ -24,27 +25,24 @@ export class App extends Component {
   };
 
   countTotalFeedback = () => {
-    return this.state.good + this.state.bad + this.state.neutral;
+    return good + bad + neutral;
   };
 
   countPositiveFeedbackPercentage = () => {
     return Math.ceil(
-      (this.state.good /
-        (this.state.good + this.state.bad + this.state.neutral)) *
-        100
-    );
+      (good / (good + bad + neutral)) * 100);
   };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    const options = Object.keys(this.state);
+  // render() {
+    // const { good, neutral, bad } = this.state;
+    // const options = Object.keys(state);
 
     return (
       <BoxFeedbackOptions>
         <Section title="Please leave feedback" children>
           <FeedbackOptions
             options={options}
-            onLeaveFeedback={this.leaveFeedback}
+            onLeaveFeedback={leaveFeedback}
           ></FeedbackOptions>
         </Section>
 
@@ -53,12 +51,12 @@ export class App extends Component {
             good={good}
             neutral={neutral}
             bad={bad}
-            total={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedbackPercentage()}
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentage()}
           />
         </Section>
       </BoxFeedbackOptions>
     );
   }
-}
+
 
