@@ -1,8 +1,7 @@
 import { BoxFeedbackOptions } from './App.styled';
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
-import { Component } from 'react';
 import { Section } from './Section/Section';
 import { useState } from 'react';
 
@@ -12,30 +11,50 @@ export const App =()=> {
   // };
   // static propTypes = {};
   
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [good, setGoodFeedback] = useState(0);
+  const [neutral, setNeutralFeedback] = useState(0);
+  const [bad, setBadFeedback] = useState(0);
 
+  const leaveFeedback = e => {
+        console.log(e.target.name);
+        const { name, value } = e.target;
 
+        switch (name) {
+            case 'good':
+                setGoodFeedback(value);
+                break;
+            
+            case 'neutral':
+                setNeutralFeedback (value);
+            break;
+            case 'bad':
+                setBadFeedback (value);
+            break;
+          
+          
+            default:
+                return;
+        }
+    }
 
-  leaveFeedback = name => {
-    this.setState(prevState => ({
-      [name]: prevState[name] + 1,
-    }));
-  };
+  // const leaveFeedback = name => {
+  //   this.setState(prevState => ({
+  //     [name]: prevState[name] + 1,
+  //   }));
+  // };
 
-  countTotalFeedback = () => {
+  const countTotalFeedback = () => {
     return good + bad + neutral;
   };
 
-  countPositiveFeedbackPercentage = () => {
+  const countPositiveFeedbackPercentage = () => {
     return Math.ceil(
       (good / (good + bad + neutral)) * 100);
   };
 
   // render() {
     // const { good, neutral, bad } = this.state;
-    // const options = Object.keys(state);
+    const options = Object.keys(state);
 
     return (
       <BoxFeedbackOptions>
@@ -51,8 +70,8 @@ export const App =()=> {
             good={good}
             neutral={neutral}
             bad={bad}
-            total={countTotalFeedback()}
-            positivePercentage={countPositiveFeedbackPercentage()}
+            // total={countTotalFeedback}
+            // positivePercentage={countPositiveFeedbackPercentage}
           />
         </Section>
       </BoxFeedbackOptions>
