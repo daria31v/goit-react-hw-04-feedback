@@ -3,45 +3,30 @@ import { BoxFeedbackOptions } from './App.styled';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Section } from './Section/Section';
-import { useState } from 'react';
+import { useState} from 'react';
 
-export const App =()=> {
-  // static defaultProps = {
-  //   state: PropTypes.number.isRequired
-  // };
-  // static propTypes = {};
-  
-  const [good, setGoodFeedback] = useState(0);
-  const [neutral, setNeutralFeedback] = useState(0);
-  const [bad, setBadFeedback] = useState(0);
 
-  const leaveFeedback = e => {
-        console.log(e.target.name);
-        const { name, value } = e.target;
+export const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+  const options = ['good', 'neutral', 'bad'];
 
-        switch (name) {
-            case 'good':
-                setGoodFeedback(value);
-                break;
-            
-            case 'neutral':
-                setNeutralFeedback (value);
-            break;
-            case 'bad':
-                setBadFeedback (value);
-            break;
-          
-          
-            default:
-                return;
-        }
+  const leaveFeedback = (key) => {
+    switch (key) {
+      case 'good':
+        setGood(prevState => prevState + 1);
+        break;
+      case 'neutral':
+        setNeutral(prevState => prevState + 1);
+        break;
+      case 'bad':
+        setBad(prevState => prevState + 1);
+        break;
+      default:
+        return;
     }
-
-  // const leaveFeedback = name => {
-  //   this.setState(prevState => ({
-  //     [name]: prevState[name] + 1,
-  //   }));
-  // };
+  };
 
   const countTotalFeedback = () => {
     return good + bad + neutral;
@@ -51,31 +36,26 @@ export const App =()=> {
     return Math.ceil(
       (good / (good + bad + neutral)) * 100);
   };
+  
+  
+  return (
+    <BoxFeedbackOptions>
+      <Section title="Please leave feedback" children>
+        <FeedbackOptions
+          options={options}
+          onLeaveFeedback={leaveFeedback}
+        ></FeedbackOptions>
+      </Section>
 
-  // render() {
-    // const { good, neutral, bad } = this.state;
-    const options = Object.keys(state);
-
-    return (
-      <BoxFeedbackOptions>
-        <Section title="Please leave feedback" children>
-          <FeedbackOptions
-            options={options}
-            onLeaveFeedback={leaveFeedback}
-          ></FeedbackOptions>
-        </Section>
-
-        <Section title="Statistics" children>
-          <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            // total={countTotalFeedback}
-            // positivePercentage={countPositiveFeedbackPercentage}
-          />
-        </Section>
-      </BoxFeedbackOptions>
-    );
-  }
-
-
+      <Section title="Statistics" children>
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={countTotalFeedback()}
+          positivePercentage={countPositiveFeedbackPercentage()}
+        />
+      </Section>
+    </BoxFeedbackOptions>
+  );
+};
